@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>السبحة الرقمية</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            text-align: center;
+            background-color: #B3E5FC; 
+            padding: 20px;
+        }
+        #frame {
+            width: 400px;
+            height: 150px;
+            border: 4px solid black;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            border-radius: 20px;
+            background-color: white;
+        }
+        #count {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 14px 26px;
+            font-size: 20px;
+            background-color: #808080;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 8px;
+        }
+        button:hover {
+            background-color: #A9A9A9; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>السبحة الرقمية</h1>
+
+    <div id="frame">
+        <span id="text">اضغط للبدء</span>
+    </div>
+
+    <p id="count">العدد: 0</p>
+
+    <button onclick="tasbeeh()">تسبيح</button>
+    <button onclick="resetCounter()">إعادة التصفير</button>
+
+    <script>
+        let count = localStorage.getItem("tasbeehCount") ? parseInt(localStorage.getItem("tasbeehCount")) : 0;
+        let index = localStorage.getItem("tasbeehIndex") ? parseInt(localStorage.getItem("tasbeehIndex")) : 0;
+
+        let adhkar = [
+            { text: "سبحان الله", color: "red" },
+            { text: "الحمد لله", color: "blue" },
+            { text: "الله أكبر", color: "green" },
+            { text: "أستغفر الله العظيم", color: "purple" }
+        ];
+
+        document.getElementById("count").textContent = "العدد: " + count;
+        if (count > 0) {
+            let zikr = adhkar[index];
+            document.getElementById("text").textContent = zikr.text;
+            document.getElementById("text").style.color = zikr.color;
+        }
+
+        function tasbeeh() {
+            count++;
+            index = (index + 1) % adhkar.length;
+
+            let zikr = adhkar[index];
+            document.getElementById("text").textContent = zikr.text;
+            document.getElementById("text").style.color = zikr.color;
+            document.getElementById("count").textContent = "العدد: " + count;
+
+            localStorage.setItem("tasbeehCount", count);
+            localStorage.setItem("tasbeehIndex", index);
+        }
+
+        function resetCounter() {
+            count = 0;
+            index = 0;
+            document.getElementById("text").textContent = "اضغط للبدء";
+            document.getElementById("text").style.color = "black";
+            document.getElementById("count").textContent = "العدد: 0";
+
+            localStorage.removeItem("tasbeehCount");
+            localStorage.removeItem("tasbeehIndex");
+        }
+    </script>
+
+</body>
+</html>
